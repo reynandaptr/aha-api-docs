@@ -1,0 +1,145 @@
+openapi: 3.1.0
+x-stoplight:
+  id: dy38btjk9ql0c
+info:
+  title: aha
+  version: '1.0'
+  summary: AHA API Documentations
+  contact:
+    name: Reynanda Putra Pratama
+    url: 'https://reynandaptr.dev/'
+    email: reynandapp1997@gmail.com
+  description: AHA
+servers:
+  - url: 'https://aha.reynandaptr.dev/v1'
+tags:
+  - name: Authentication
+    description: Authentication endpoint
+paths:
+  /auth/login:
+    post:
+      summary: ''
+      operationId: post-auth-login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BaseResponseBody'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequestBody'
+      tags:
+        - Authentication
+  /auth/sign-up:
+    parameters: []
+    post:
+      summary: ''
+      operationId: post-auth-sign-up
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BaseResponseBody'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpRequestBody'
+      tags:
+        - Authentication
+  /auth/validate:
+    get:
+      summary: ''
+      operationId: get-auth-validate
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BaseResponseBody'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/ValidateResponseBody'
+      security:
+        - aha_jwt: []
+      tags:
+        - Authentication
+components:
+  schemas:
+    BaseResponseBody:
+      title: BaseResponseBody
+      x-stoplight:
+        id: gyzkbtjex84v0
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        error:
+          type:
+            - string
+            - object
+    LoginRequestBody:
+      title: LoginRequestBody
+      x-stoplight:
+        id: 2v0vvrjfx436r
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+    SignUpRequestBody:
+      title: SignUpRequestBody
+      x-stoplight:
+        id: 4yyfxjyekl4lz
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+        repassword:
+          type: string
+      required:
+        - email
+        - password
+        - repassword
+    ValidateResponseBody:
+      title: ValidateResponseBody
+      x-stoplight:
+        id: opvmi4cgq6mzc
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        is_verified:
+          type: boolean
+        provider:
+          type: string
+        prodiver_id:
+          type: string
+  securitySchemes:
+    aha_jwt:
+      name: jwt
+      type: apiKey
+      in: cookie

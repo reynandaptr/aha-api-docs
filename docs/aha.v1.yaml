@@ -99,6 +99,8 @@ paths:
           name: session_token
       security:
         - aha_jwt: []
+      tags:
+        - Authentication
   /auth/resend-email-verification:
     post:
       summary: ''
@@ -113,6 +115,8 @@ paths:
                   - $ref: '#/components/schemas/BaseResponseBody'
       security:
         - aha_jwt: []
+      tags:
+        - Authentication
   /auth/reset-password:
     post:
       summary: ''
@@ -131,6 +135,8 @@ paths:
               $ref: '#/components/schemas/ResetPasswordRequestBody'
       security:
         - aha_jwt: []
+      tags:
+        - Authentication
   /auth/logout:
     post:
       summary: ''
@@ -142,6 +148,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BaseResponseBody'
+      tags:
+        - Authentication
 components:
   schemas:
     BaseResponseBody:

@@ -10,7 +10,7 @@ info:
     email: reynandapp1997@gmail.com
   description: AHA
 servers:
-  - url: 'https://aha-core-production.up.railway.app/v1'
+  - url: 'https://aha-api.reynandaptr.dev/v1'
     description: Production
 tags:
   - name: Authentication

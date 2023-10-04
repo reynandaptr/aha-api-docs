@@ -212,6 +212,8 @@ paths:
       x-extension-1: null
       tags:
         - Analytics
+      security:
+        - aha_jwt: []
   /analytics/users/online:
     parameters: []
     get:
@@ -231,6 +233,8 @@ paths:
                         $ref: '#/components/schemas/UserOnlineAnalyticsResponseBody'
       tags:
         - Analytics
+      security:
+        - aha_jwt: []
 components:
   schemas:
     BaseResponseBody:

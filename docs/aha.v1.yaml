@@ -15,6 +15,8 @@ servers:
 tags:
   - name: Authentication
     description: Authentication endpoint
+  - name: Analytics
+    description: Analytics endpoint
 paths:
   /auth/login:
     post:
@@ -88,19 +90,14 @@ paths:
               schema:
                 allOf:
                   - $ref: '#/components/schemas/BaseResponseBody'
-      parameters:
-        - schema:
-            type: string
-          in: header
-          name: session_id
-        - schema:
-            type: string
-          in: header
-          name: session_token
-      security:
-        - aha_jwt: []
+      parameters: []
       tags:
         - Authentication
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailVerificationRequestBody'
   /auth/resend-email-verification:
     post:
       summary: ''
@@ -150,6 +147,90 @@ paths:
                 $ref: '#/components/schemas/BaseResponseBody'
       tags:
         - Authentication
+  /auth/profile:
+    put:
+      summary: ''
+      operationId: put-auth-profile
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BaseResponseBody'
+      security:
+        - aha_jwt: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserProfileRequestBody'
+      tags:
+        - Authentication
+  /auth/login/google:
+    get:
+      summary: ''
+      operationId: get-auth-login-google
+      responses:
+        '302':
+          description: Found
+      tags:
+        - Authentication
+  /auth/redirect/google:
+    get:
+      summary: ''
+      operationId: get-auth-redirect-google
+      responses:
+        '302':
+          description: Found
+      tags:
+        - Authentication
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: code
+  /analytics/users:
+    get:
+      summary: ''
+      operationId: get-analytics-users
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BaseResponseBody'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UserAnalyticsResponse'
+      x-extension-1: null
+      tags:
+        - Analytics
+  /analytics/users/online:
+    parameters: []
+    get:
+      summary: ''
+      operationId: get-analytics-users-online
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BaseResponseBody'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/UserOnlineAnalyticsResponseBody'
+      tags:
+        - Analytics
 components:
   schemas:
     BaseResponseBody:
@@ -221,6 +302,58 @@ components:
           type: string
         renew_password:
           type: string
+    EmailVerificationRequestBody:
+      title: EmailVerificationRequestBody
+      x-stoplight:
+        id: iiupvjlbgdrk7
+      type: object
+      properties:
+        session_id:
+          type: string
+        session_token:
+          type: string
+    UpdateUserProfileRequestBody:
+      title: UpdateUserProfileRequestBody
+      x-stoplight:
+        id: 1p58lh70qo1kn
+      type: object
+      properties:
+        name:
+          type: string
+    UserAnalyticsResponse:
+      title: AnalyticsUsersResponseBody
+      x-stoplight:
+        id: fcaafa1516c36
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        is_verified:
+          type: boolean
+        provider:
+          type: string
+        login_count:
+          type: integer
+        signup_timestamp:
+          type: string
+        last_session_timestamp:
+          type: string
+    UserOnlineAnalyticsResponseBody:
+      title: UserOnlineAnalyticsResponseBody
+      x-stoplight:
+        id: d0wiyv35x8xti
+      type: object
+      properties:
+        user_count:
+          type: integer
+        user_active_session_count:
+          type: integer
+        average_active_user:
+          type: integer
   securitySchemes:
     aha_jwt:
       name: aha_jwt

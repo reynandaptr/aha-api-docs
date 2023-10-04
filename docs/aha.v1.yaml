@@ -147,6 +147,8 @@ paths:
                 $ref: '#/components/schemas/BaseResponseBody'
       tags:
         - Authentication
+      security:
+        - aha_jwt: []
   /auth/profile:
     put:
       summary: ''
